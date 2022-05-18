@@ -1,15 +1,19 @@
-import { useEffect, useState } from "react";
-import { randomColorRgb, rgbToHex, hexToRgb, distPercentage } from "./utils";
-import { Grid, Button, Flex, Text, Heading, VStack } from "@chakra-ui/react";
-import ColorPicker from "./ColorPicker";
-
+import { useState } from "react";
+import {
+  randomColorRgb,
+  rgbToHex,
+  hexToRgb,
+  distPercentage,
+  getBrightness
+} from "./utils";
+import { Grid, Button, Flex, Text, Heading, Stack } from "@chakra-ui/react";
+import { HexColorPicker } from "react-colorful";
 export default function App() {
-  const [bgColor, setBgColor] = useState({ r: 0, g: 0, b: 0 });
   const [color, setColor] = useState("#ffffff");
   const [score, setScore] = useState(null);
-  useEffect(() => {
-    setBgColor(randomColorRgb());
-  }, []);
+  const bgColor = randomColorRgb();
+  const textColor =
+    getBrightness(color) > 128 || color.a < 0.5 ? "#000" : "#FFF";
 
   const showScore = () => {
     const rgbColor = hexToRgb(color);
@@ -19,27 +23,44 @@ export default function App() {
   return (
     <Grid w="100%" h="100vh">
       {!score ? (
-        <Flex align="center" justify="center" bgColor={rgbToHex(bgColor)}>
-          <VStack spacing="8">
-            <Heading fontSize="4em">Guess the color</Heading>
-            <Text fontSize="sm" bg="white" px="6" py="4" borderRadius="6">
-              Click on the button below to pick the closest color to the
-              background of this page.
+        <Flex p={6} align="center" justify="center" bgColor={rgbToHex(bgColor)}>
+          <Stack color={textColor}>
+            <Heading as="h1" fontSize="4em">
+              Guess the color
+            </Heading>
+            <Text fontSize="md" pb={4}>
+              Select as approximate color as you can from the background and
+              click on the 'Guess' button. Check your score of how close you
+              were!
             </Text>
-            <ColorPicker
-              value={color}
-              onChange={(e) => setColor(e.target.value)}
+            <Flex gap="1rem" justifyContent="center" py={4}>
+              <HexColorPicker color={color} onChange={setColor} />
+              <Flex
+                mt="0"
+                w="200px"
+                h="200px"
+                rounded="0.5rem"
+                bgColor={color}
+                alignItems="center"
+                justifyContent="center"
+                boxShadow="base"
+              >
+                This is your color
+              </Flex>
+            </Flex>
+            <Button
+              colorScheme="teal"
+              onClick={showScore}
+              px={8}
+              alignSelf="center"
             >
-              Click here to pick a color
-            </ColorPicker>
-            <Button colorScheme="teal" onClick={showScore}>
               Guess
             </Button>
-          </VStack>
+          </Stack>
         </Flex>
       ) : (
         <Grid alignItems="center">
-          <VStack textAlign="center">
+          <Stack textAlign="center">
             <Text fontWeight="bold" fontSize="5em">
               <Text>Your score is:</Text>
               <Text>
@@ -52,7 +73,7 @@ export default function App() {
                 Retry
               </Button>
             </Text>
-          </VStack>
+          </Stack>
         </Grid>
       )}
     </Grid>

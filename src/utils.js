@@ -129,3 +129,6 @@ function XYZtoLAB(x, y, z) {
 
   return [CIE_L, CIE_a, CIE_b];
 }
+
+export const getBrightness = ({ r, g, b }) =>
+  (r * 299 + g * 587 + b * 114) / 1000;
