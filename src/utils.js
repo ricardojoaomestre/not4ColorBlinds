@@ -110,8 +110,12 @@ function XYZtoLAB(x, y, z) {
   return [CIE_L, CIE_a, CIE_b];
 }
 
-export const getBrightness = ({ r, g, b }) =>
-  (r * 299 + g * 587 + b * 114) / 1000;
+export const getBrightness = (color) =>
+  !color ? null : (color.r * 299 + color.g * 587 + color.b * 114) / 1000;
 
 export const getContrastColor = (color) =>
-  getBrightness(color) > 128 || color.a < 0.5 ? "#000" : "#FFF";
+  !color
+    ? null
+    : getBrightness(color) > 128 || color.a < 0.5
+    ? "#000000"
+    : "#FFFFFF";

@@ -12,7 +12,7 @@ import { AppContext } from "./context/AppContext";
 const App = () => {
   const [score, setScore] = useState(null);
 
-  const { bgColor, reset } = useContext(AppContext);
+  const { bgColor, textColor, reset } = useContext(AppContext);
 
   const calculateScore = (color) => {
     setScore(distPercentage(bgColor, color));
@@ -31,15 +31,16 @@ const App = () => {
   }
 
   return (
-    <Layout>
+    <Layout bgColor={bgColor} color={textColor}>
       <Grid
         templateColumns={{ base: "1fr", lg: "60% auto" }}
         templateRows={{ base: "1fr" }}
         alignItems="center"
         justifyContent="center"
         gap={{ base: 4, lg: 8 }}
+        h="100%"
       >
-        <GridItem alignSelf="flex-start">
+        <GridItem>
           <Heading />
         </GridItem>
         <GridItem justifySelf="center">
