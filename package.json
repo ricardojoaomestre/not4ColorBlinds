@@ -1,13 +1,11 @@
 {
   "name": "not4colorblinds",
   "version": "1.0.0",
-  "description": "",
+  "description": "A colourful game where the user needs to pick the closest colour to the background as he can and then get a score.",
   "keywords": [],
   "main": "src/index.js",
   "dependencies": {
     "@chakra-ui/react": "2.0.0",
-    "@chakra-ui/theme": "2.0.0",
-    "@chakra-ui/theme-tools": "2.0.0",
     "@emotion/react": "11.9.0",
     "@emotion/styled": "11.8.1",
     "framer-motion": "6.3.3",

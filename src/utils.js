@@ -18,9 +18,11 @@ export const rgbToHex = (color) => {
 };
 
 const dist = (c1, c2) => {
-  const xyzC1 = RGBtoXYZ(c1.r, c1.g, c1.b);
+  const c1Rgb = hexToRgb(c1);
+  const c2Rgb = hexToRgb(c2);
+  const xyzC1 = RGBtoXYZ(c1Rgb.r, c1Rgb.g, c1Rgb.b);
   const lab1 = XYZtoLAB(xyzC1[0], xyzC1[1], xyzC1[2]);
-  const xyzC2 = RGBtoXYZ(c2.r, c2.g, c2.b);
+  const xyzC2 = RGBtoXYZ(c2Rgb.r, c2Rgb.g, c2Rgb.b);
   const lab2 = XYZtoLAB(xyzC2[0], xyzC2[1], xyzC2[2]);
   return deltaE(lab1, lab2);
 };
@@ -63,31 +65,19 @@ function deltaE(labA, labB) {
   return i < 0 ? 0 : Math.sqrt(i);
 }
 
-function RGBtoXYZ(R, G, B) {
-  let var_R = parseFloat(R / 255); //R from 0 to 255
-  let var_G = parseFloat(G / 255); //G from 0 to 255
-  let var_B = parseFloat(B / 255); //B from 0 to 255
+function RGBtoXYZ(r, g, b) {
+  let var_R = parseFloat(r / 255); //R from 0 to 255
+  let var_G = parseFloat(g / 255); //G from 0 to 255
+  let var_B = parseFloat(b / 255); //B from 0 to 255
 
-  if (var_R > 0.04045) {
-    var_R = Math.pow((var_R + 0.055) / 1.055, 2.4);
-  } else {
-    var_R = var_R / 12.92;
-  }
-  if (var_G > 0.04045) {
-    var_G = Math.pow((var_G + 0.055) / 1.055, 2.4);
-  } else {
-    var_G = var_G / 12.92;
-  }
+  const recalcVar = (value) =>
+    value > 0.04045
+      ? Math.pow((value + 0.055) / 1.055, 2.4) * 100
+      : (value / 12.92) * 100;
 
-  if (var_B > 0.04045) {
-    var_B = Math.pow((var_B + 0.055) / 1.055, 2.4);
-  } else {
-    var_B = var_B / 12.92;
-  }
-
-  var_R = var_R * 100;
-  var_G = var_G * 100;
-  var_B = var_B * 100;
+  var_R = recalcVar(var_R);
+  var_G = recalcVar(var_G);
+  var_B = recalcVar(var_B);
 
   //Observer. = 2°, Illuminant = D65
   const X = var_R * 0.4124 + var_G * 0.3576 + var_B * 0.1805;
@@ -106,22 +96,12 @@ function XYZtoLAB(x, y, z) {
   let var_Y = y / ref_Y; //ref_Y = 100.000
   let var_Z = z / ref_Z; //ref_Z = 108.883
 
-  if (var_X > 0.008856) {
-    var_X = Math.pow(var_X, 1 / 3);
-  } else {
-    var_X = 7.787 * var_X + 16 / 116;
-  }
-  if (var_Y > 0.008856) {
-    var_Y = Math.pow(var_Y, 1 / 3);
-  } else {
-    var_Y = 7.787 * var_Y + 16 / 116;
-  }
+  const recalcVar = (value) =>
+    value > 0.008856 ? Math.pow(value, 1 / 3) : 7.787 * value + 16 / 116;
 
-  if (var_Z > 0.008856) {
-    var_Z = Math.pow(var_Z, 1 / 3);
-  } else {
-    var_Z = 7.787 * var_Z + 16 / 116;
-  }
+  var_X = recalcVar(var_X);
+  var_Y = recalcVar(var_Y);
+  var_Z = recalcVar(var_Z);
 
   const CIE_L = 116 * var_Y - 16;
   const CIE_a = 500 * (var_X - var_Y);
@@ -132,3 +112,6 @@ function XYZtoLAB(x, y, z) {
 
 export const getBrightness = ({ r, g, b }) =>
   (r * 299 + g * 587 + b * 114) / 1000;
+
+export const getContrastColor = (color) =>
+  getBrightness(color) > 128 || color.a < 0.5 ? "#000" : "#FFF";
