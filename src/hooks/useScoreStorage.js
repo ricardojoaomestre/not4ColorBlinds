@@ -15,7 +15,6 @@ const useScoreStorage = () => {
       selectedColor,
     };
     const orderedScores = orderScoresDesc([...scores, value]);
-    console.log(orderedScores);
     if (orderedScores.length >= MAX_SCORES) {
       setScores(orderedScores.slice(0, MAX_SCORES));
     } else {

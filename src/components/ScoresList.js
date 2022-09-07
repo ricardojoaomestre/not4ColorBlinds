@@ -1,6 +1,7 @@
-import { Box, Table, Tbody, Td, Text, Th, Thead, Tr } from "@chakra-ui/react";
+import { Box, Table, Tbody, Td, Text, Thead, Tr } from "@chakra-ui/react";
 import React from "react";
-import { formatPercentage } from "../utils";
+import useScoreStorage from "../hooks/useScoreStorage";
+
 import EmptyScores from "./EmptyScores";
 import ScoreRow from "./ScoreRow";
 
@@ -12,7 +13,9 @@ const HeaderCell = ({ children }) => (
   </Td>
 );
 
-const ScoresList = ({ scores }) => {
+const ScoresList = () => {
+  const [scores] = useScoreStorage();
+
   if (!scores || scores.length === 0) {
     return <EmptyScores />;
   }

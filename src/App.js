@@ -1,25 +1,16 @@
-import {
-  Box,
-  Button,
-  Divider,
-  Flex,
-  HStack,
-  Text,
-  VStack,
-} from "@chakra-ui/react";
+import { Box, Button, HStack } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { HexColorPicker } from "react-colorful";
 import ColorBox from "./components/ColorBox";
-import ScoresList from "./components/ScoresList";
+import Result from "./components/Result";
 import useScoreStorage from "./hooks/useScoreStorage";
-import { formatPercentage } from "./utils";
 import { distPercentage, randomColorRgb, rgbToHex } from "./utils/colorUtils";
 
 const App = () => {
   const [targetColor, setTargetColor] = useState("#000000");
   const [selectedColor, setSelectedColor] = useState("#FFFFFF");
   const [submittedScore, setSubmittedScore] = useState(null);
-  const [scores, addScore] = useScoreStorage();
+  const [, addScore] = useScoreStorage();
 
   const reset = () => {
     const randomColor = rgbToHex(randomColorRgb());
@@ -41,39 +32,15 @@ const App = () => {
     setSubmittedScore(null);
   };
 
-  if (submittedScore) {
+  if (submittedScore)
     return (
-      <VStack gap={3} justifyContent={"center"}>
-        <Text fontSize={"3xl"} fontWeight={"bold"} textAlign={"center"}>
-          {formatPercentage(submittedScore)}
-        </Text>
-
-        <HStack>
-          <Flex
-            w="200px"
-            h={"16"}
-            bgGradient={`linear(to-r, ${targetColor}, ${selectedColor})`}
-            justifyContent={"space-between"}
-            alignItems="center"
-            px={4}
-          >
-            <ColorBox color={targetColor} circle />
-            <ColorBox color={selectedColor} circle />
-          </Flex>
-        </HStack>
-
-        <Button
-          variant={"outline"}
-          colorScheme={"whatsapp"}
-          onClick={handleReset}
-        >
-          Try again
-        </Button>
-        <Divider />
-        <ScoresList scores={scores} />
-      </VStack>
+      <Result
+        submittedScore={submittedScore}
+        targetColor={targetColor}
+        selectedColor={selectedColor}
+        onReset={handleReset}
+      />
     );
-  }
 
   return (
     <Box w="200px">

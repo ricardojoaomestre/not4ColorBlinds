@@ -1,4 +1,4 @@
-import { Tr, Td, Box, Flex } from "@chakra-ui/react";
+import { Tr, Td, Box, Flex, Text } from "@chakra-ui/react";
 import styled from "@emotion/styled";
 import React from "react";
 import { formatPercentage } from "../utils";
@@ -13,7 +13,9 @@ const ColorBoxAbsolute = styled(ColorBox)`
 const ScoreRow = ({ date, score, targetColor, selectedColor }) => (
   <Tr>
     <Td>{new Date(date).toLocaleDateString()}</Td>
-    <Td>{formatPercentage(score)}</Td>
+    <Td>
+      <Text fontWeight={"bold"}>{formatPercentage(score)}</Text>
+    </Td>
     <Td>
       <Flex w={14} height={8} position={"relative"}>
         <ColorBoxAbsolute color={targetColor} circle left="0" />
