@@ -1,4 +1,3 @@
-import { AppContextProvider } from "./context/AppContext";
 import { ChakraProvider } from "@chakra-ui/react";
 
 import { createRoot } from "react-dom/client";
@@ -10,8 +9,6 @@ const root = createRoot(rootElement);
 
 root.render(
   <ChakraProvider>
-    <AppContextProvider>
-      <App />
-    </AppContextProvider>
+    <App />
   </ChakraProvider>
 );
