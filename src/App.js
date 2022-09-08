@@ -44,11 +44,23 @@ const App = () => {
 
   return (
     <Box w="200px">
+      <Box display="flex" direction="row" mt={4} mb={8}>
+        <ColorBox
+          color={targetColor}
+          mx={0}
+          roundedTopRight={0}
+          roundedBottomRight={0}
+          h={24}
+        />
+        <ColorBox
+          color={selectedColor}
+          mx={0}
+          roundedTopLeft={0}
+          roundedBottomLeft={0}
+          h={24}
+        />
+      </Box>
       <HexColorPicker color={selectedColor} onChange={setSelectedColor} />
-      <HStack gap={1} my={4}>
-        <ColorBox color={targetColor} />
-        <ColorBox color={selectedColor} />
-      </HStack>
       <Button colorScheme={"whatsapp"} width={"full"} onClick={handleSubmit}>
         Submit
       </Button>
